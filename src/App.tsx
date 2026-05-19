@@ -5,15 +5,6 @@ import { PageContainer } from "./layouts/Container/PageContainer";
 import { ChakraProvider } from "@chakra-ui/react";
 import { LoginCard } from "./components/ui/LoginCard";
 function App() {
-  // const [loading, setLoading] = useState(false);
-
-  // function handleLogin() {
-  //   setLoading(true);
-
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //   }, 2000);
-  // }
 
   return (
     <ChakraProvider value={system}>
