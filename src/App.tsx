@@ -5,7 +5,10 @@ import { PageContainer } from "./layouts/Container/PageContainer";
 import { ChakraProvider } from "@chakra-ui/react";
 import { LoginCard } from "./components/ui/LoginCard";
 function App() {
+<<<<<<< HEAD
 
+=======
+>>>>>>> f6e7ae4 (Corrigindo arquivos)
   return (
     <ChakraProvider value={system}>
       <PageContainer>
