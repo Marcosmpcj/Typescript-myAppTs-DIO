@@ -1,20 +1,26 @@
-// import { useState } from "react";
+import { BrowserRouter } from "react-router-dom";
+import { ChakraProvider } from "@chakra-ui/react/styled-system";
+import { system } from "@chakra-ui/react/preset";
+import { PageContainer } from "./layouts/PageContainer";
+import { AppContextProvider } from "./components/Contexts/AppContext";
+import { Header } from "./components/Header/Header";
+import MainRoutes from "./routes";
+import { createLocalStorage, getAllLocalStorage } from "./services/storage";
 
-import { system } from "./theme";
-import { PageContainer } from "./layouts/Container/PageContainer";
-import { ChakraProvider } from "@chakra-ui/react";
-import { LoginCard } from "./components/ui/LoginCard";
 function App() {
-<<<<<<< HEAD
+  !getAllLocalStorage() && createLocalStorage();
 
-=======
->>>>>>> f6e7ae4 (Corrigindo arquivos)
   return (
-    <ChakraProvider value={system}>
-      <PageContainer>
-        <LoginCard />
-      </PageContainer>
-    </ChakraProvider>
+    <BrowserRouter>
+      <AppContextProvider>
+        <ChakraProvider value={system}>
+          <Header />
+          <PageContainer>
+            <MainRoutes />
+          </PageContainer>
+        </ChakraProvider>
+      </AppContextProvider>
+    </BrowserRouter>
   );
 }
 

@@ -1,17 +1,45 @@
-import { VStack, Field, InputGroup, Input } from "@chakra-ui/react";
+import { LoginCard } from "../components/Cards/LoginCard";
+import { CustomButton } from "../components/Buttons/CustomButton";
+import { Field, InputGroup, Input, Spinner } from "@chakra-ui/react";
 import { Mail, Lock } from "lucide-react";
-import { CustomButton } from "../ui/CustomButton";
-import { loginWelcome } from "@/services/loginWelcome";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AppContext } from "../components/Contexts/AppContext";
+import validateLogin from "../services/validateLogin";
 
-export const Form = () => {
+const Home = () => {
+  const [email, setEmail] = useState<string>("");
+  const [pass, setPass] = useState<string>("");
+  const [, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  const { setIsLoggedIn } = useContext(AppContext);
+
+  const handleLogin = async (): Promise<void> => {
+    setIsLoading(true);
+
+    const validateUser = await validateLogin(email, pass, setIsLoggedIn);
+
+    if (validateUser) {
+      navigate(`/conta/${validateUser.id}`);
+    } else {
+      setError("Email ou senha incorretos");
+    }
+
+    setIsLoading(false);
+  };
+
   return (
-    <VStack gap={4} align="stretch">
-      {/* Email */}
+    <LoginCard>
+      {/* Email Input */}
       <Field.Root required>
         <Field.Label color="gray.300">E-mail</Field.Label>
-
         <InputGroup startElement={<Mail size={18} />}>
           <Input
+            autoComplete="off"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
             placeholder="Digite seu e-mail"
             size="lg"
             bg="whiteAlpha.50"
@@ -33,12 +61,14 @@ export const Form = () => {
         </InputGroup>
       </Field.Root>
 
-      {/* Password */}
+      {/* Password Input */}
       <Field.Root required>
         <Field.Label color="gray.300">Senha</Field.Label>
 
         <InputGroup startElement={<Lock size={18} />}>
           <Input
+            value={pass}
+            onChange={(event) => setPass(event.target.value)}
             type="password"
             placeholder="Digite sua senha"
             size="lg"
@@ -62,7 +92,13 @@ export const Form = () => {
       </Field.Root>
 
       {/* Button */}
-      <CustomButton onClick={loginWelcome} />
-    </VStack>
+      {isLoading ? (
+        <Spinner color="purple.400" size="lg" />
+      ) : (
+        <CustomButton onClick={handleLogin} />
+      )}
+    </LoginCard>
   );
 };
+
+export default Home;

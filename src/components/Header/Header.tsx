@@ -1,15 +1,47 @@
-import { Box,Heading,Text } from "@chakra-ui/react";
+import { Flex, Box, Button, Heading } from "@chakra-ui/react";
+import { useContext } from "react";
+import { AppContext } from "../Contexts/AppContext";
+import { changeLocalStorage } from "../../services/storage";
 
 export const Header = () => {
-  return (
-    <Box textAlign="center">
-      <Heading size="xl" color="white" fontWeight="bold" mb={3}>
-        Diobank
-      </Heading>
+  const { isLoggedIn, setIsLoggedIn } = useContext(AppContext);
 
-      <Text color="gray.400" fontSize="sm">
-        Faça login para continuar
-      </Text>
-    </Box>
+  const logout = (): void => {
+    setIsLoggedIn(false);
+    changeLocalStorage({ login: false });
+  };
+  return (
+    <Flex
+      bg="#1E192C"
+      height="8vh"
+      align="center"
+      p="0 2%"
+      justify={!isLoggedIn ? "center" : "space-between"}
+    >
+      <Box>
+        <Heading color="white" fontWeight="bold" fontSize="3xl">
+          Diobank
+        </Heading>
+      </Box>
+      {isLoggedIn && (
+        <Button
+          borderRadius="md"
+          bg="purple.600"
+          fontSize="md"
+          size="sm"
+          transition="0.2s"
+          _hover={{
+            bg: "purple.500",
+            transform: "translateY(-2px)",
+          }}
+          _active={{
+            transform: "scale(0.98)",
+          }}
+          onClick={() => logout()}
+        >
+          Sair
+        </Button>
+      )}
+    </Flex>
   );
 };
